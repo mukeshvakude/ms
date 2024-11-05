@@ -15,11 +15,9 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -39,7 +37,6 @@ import com.brightpath.services.DietService;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
-@CrossOrigin(origins = "http://localhost:3000") 
 public class MemberController {
 
     @Autowired
@@ -111,9 +108,8 @@ public class MemberController {
 
     
 
-    
     @PostMapping("/add-member")
-    public ResponseEntity<String> addMember(@ModelAttribute Member member, 
+    public String addMember(@ModelAttribute Member member, 
                             @RequestParam("image") MultipartFile file, 
                             @RequestParam int membershipDuration,
                             RedirectAttributes redirectAttributes) {
@@ -123,11 +119,7 @@ public class MemberController {
             if (existingMember != null) {
                 redirectAttributes.addFlashAttribute("errorMessage", "User already a member of the gym!");
                 System.out.println("User already a member of the gym!");
-                /* for theamleaf 
-                
-                return "redirect:/"; */
-                
-                return ResponseEntity.status(HttpStatus.OK).body("User already a member of the gym!");
+                return "redirect:/";  // Redirect to home with error message
             }
 
             String contentType = file.getContentType();
@@ -178,29 +170,16 @@ public class MemberController {
                 paymentRepository.save(payment); // Save the payment directly
 
                 System.out.println("Member saved with new image URL: /uploads/" + fileName);
-                /* for theamleaf 
-                	redirectAttributes.addFlashAttribute("message", "Member added successfully!"); 
-                */
-                return ResponseEntity.ok("Member added successfully!");
+                redirectAttributes.addFlashAttribute("message", "Member added successfully!");
             } else {
-            	return ResponseEntity.ok("Invalid image format. Supported formats are: jpg, jpeg, png, gif, bmp, svg.");
-            	/* for theamleaf 
-            	redirectAttributes.addFlashAttribute("errorMessage", "Invalid image format. Supported formats are: jpg, jpeg, png, gif, bmp, svg.");
-            	*/
+                redirectAttributes.addFlashAttribute("errorMessage", "Invalid image format. Supported formats are: jpg, jpeg, png, gif, bmp, svg.");
             }
         } catch (Exception e) {
             System.out.println("Error while processing image: " + e.getMessage());
-            return ResponseEntity.ok("An error occurred while uploading the image.");
-            /* for theamleaf 
-               redirectAttributes.addFlashAttribute("errorMessage", "An error occurred while uploading the image.");
-            */
+            redirectAttributes.addFlashAttribute("errorMessage", "An error occurred while uploading the image.");
         }
 
-        /* for theamleaf 
-        //return "redirect:/"; // Redirect after processing
-          
-         */
-         
+        return "redirect:/"; // Redirect after processing
     }
 
     // Helper method to calculate price based on membership type and duration
@@ -404,3 +383,4 @@ public class MemberController {
 
     
 }
+
