@@ -209,6 +209,7 @@ public class MemberController {
         return contentType.equals("image/jpeg") || 
                contentType.equals("image/png") || 
                contentType.equals("image/gif") || 
+		contentType.equals("image/jpg") ||
                contentType.equals("image/bmp") || 
                contentType.equals("image/svg+xml");
     }
