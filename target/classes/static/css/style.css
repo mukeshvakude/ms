@@ -1,0 +1,126 @@
+/* General Styling */
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+}
+
+/* Sidebar Styling */
+.sidebar, .right-sidebar {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    width: 200px;
+    background-color: #343a40;
+    color: #fff;
+    padding: 15px;
+    overflow-y: auto;
+}
+
+.sidebar {
+    left: 0;
+}
+
+.right-sidebar {
+    right: 0;
+}
+
+/* Main Content */
+.main-content {
+    margin-left: 200px; /* Space for left sidebar */
+    margin-right: 200px; /* Space for right sidebar */
+    padding: 20px;
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+    .sidebar, .right-sidebar {
+        display: none; /* Hide sidebars on smaller screens */
+    }
+
+    .main-content {
+        margin: 0;
+        padding: 10px; /* Adjust padding for smaller screens */
+    }
+
+    .navbar-text {
+        font-size: 12px;
+    }
+
+    #membersTable {
+        font-size: 12px; /* Smaller font size for table on small screens */
+    }
+
+    .table thead {
+        display: none; /* Hide table headers */
+    }
+
+    .table tbody tr {
+        display: flex;
+        flex-wrap: wrap; /* Wrap table rows */
+        margin-bottom: 10px;
+    }
+
+    .table tbody td {
+        display: flex;
+        justify-content: space-between;
+        flex: 1 1 45%; /* Adjust table cells width */
+        padding: 5px;
+        border-bottom: 1px solid #dee2e6;
+    }
+
+    .table td::before {
+        content: attr(data-label); /* Display table headers as content before data */
+        flex: 0 0 50%;
+        text-align: left;
+        font-weight: bold;
+    }
+}
+
+@media (min-width: 768px) {
+    .navbar-expand-lg .navbar-collapse {
+        justify-content: flex-end; /* Align navbar items to the right */
+    }
+}
+
+@media (min-width: 992px) {
+    .sidebar, .right-sidebar {
+        display: block; /* Show sidebars on larger screens */
+    }
+
+    .table-container {
+        margin-left: 200px; /* Space for left sidebar */
+        margin-right: 200px; /* Space for right sidebar */
+    }
+}
+
+/* Navbar Styling */
+.navbar {
+    background-color: #343a40;
+    color: #fff;
+    padding: 10px;
+}
+
+.navbar .navbar-brand,
+.navbar .navbar-nav .nav-link {
+    color: #fff;
+}
+
+/* Table Styling */
+.table-responsive {
+    margin-top: 20px;
+}
+
+.table td, .table th {
+    padding: 10px;
+    vertical-align: middle;
+}
+
+.table td {
+    position: relative;
+    border-top: 1px solid #dee2e6;
+}
+
+.table th {
+    font-weight: bold;
+}
