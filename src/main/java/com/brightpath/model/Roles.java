@@ -13,8 +13,8 @@ public class Roles {
     @Column(name = "admin", nullable = false) // Define 'admin' column
     private Long admin;
 
-    @Column(name = "active", nullable = false) // Define 'active' column
-    private boolean active;
+    @Column(name = "active", nullable = true) // Define 'active' column
+    private boolean active = true;
 
     @Column(name = "branch", nullable = false) // Define 'branch' column
     private String branch;
