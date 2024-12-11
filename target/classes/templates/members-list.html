@@ -14,102 +14,108 @@
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 	<link rel="stylesheet" href="/css/memberList.css"> <!-- External style.css -->
 	
-</head>
+	<style>
+	        /* Sidebar styles */
+	        .sidebar {
+	            position: fixed;
+	            top: 0;
+	            left: -250px;
+	            height: 100%;
+	            width: 250px;
+	            background-color: #f8f9fa;
+	            border-right: 1px solid #ddd;
+	            padding: 20px;
+	            transition: 0.3s;
+	        }
 
-<body>
+	        .sidebar.open {
+	            left: 0;
+	        }
+
+	        .sidebar h5 {
+	            color: #007bff;
+	        }
+
+	        .sidebar .form-control {
+	            margin-bottom: 10px;
+	        }
+
+	        .sidebar .btn-primary {
+	            margin-top: 20px;
+	        }
+	    </style>
+	</head>
+	<body>
 
 	<!-- Navbar -->
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
-		<a class="navbar-brand" href="#">
-			<img th:src="@{${gymImagePath}}" alt="Gym Logo" style="width: 50px; height: 50px;">
-		</a>
-		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent"
-			aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
-			<span class="navbar-toggler-icon"></span>
-		</button>
+	    <a class="navbar-brand" href="#">
+	        <img th:src="@{${gymImagePath}}" alt="Gym Logo" style="width: 50px; height: 50px;">
+	    </a>
+	    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent"
+	        aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+	        <span class="navbar-toggler-icon"></span>
+	    </button>
 
-		<div class="collapse navbar-collapse" id="navbarContent">
-			<div class="ml-auto d-flex align-items-center">
-				<span id="currentUser" class="navbar-text mr-3" style="color: white;">
-					Logged in as: <strong th:text="${username}">Username</strong>
-				</span>
-				<form action="/logout" method="post" class="mr-2">
-					<button type="submit" class="btn btn-danger btn-sm">
-						<i class="bi bi-box-arrow-right"></i>
-					</button>
-				</form>
-				<button class="btn btn-info btn-sm" data-toggle="modal" data-target="#profileModal">
-					<i class="bi bi-person-circle"></i>
-				</button>
-			</div>
-		</div>
+	    <div class="collapse navbar-collapse" id="navbarContent">
+	        <div class="d-flex align-items-center">
+	            <!-- Business Summary Button -->
+	            <a href="#" class="btn btn-info btn-sm mr-3" data-toggle="modal" data-target="#businessSummaryModal">
+	                <i class="bi bi-bar-chart"></i> Business Summary
+	            </a>
+
+	            <!-- Filters Button (opens sidebar) -->
+	            <a href="#" class="btn btn-info btn-sm" id="filtersButton">
+	                <i class="bi bi-funnel"></i> Filters
+	            </a>
+	        </div>
+
+	        <!-- Profile & Logout section (pushed to the right) -->
+	        <div class="ml-auto d-flex align-items-center">
+	            <span id="currentUser" class="navbar-text mr-3" style="color: white;">
+	                Logged in as: <strong th:text="${username}">Username</strong>
+	            </span>
+	            <form action="/logout" method="post" class="mr-2">
+	                <button type="submit" class="btn btn-danger btn-sm">
+	                    <i class="bi bi-box-arrow-right"></i>
+	                </button>
+	            </form>
+	            <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#profileModal">
+	                <i class="bi bi-person-circle"></i>
+	            </button>
+	        </div>
+	    </div>
 	</nav>
 
-	<!-- Left Sidebar -->
-	<div class="sidebar">
-		<h5 class="text-primary">Filters</h5>
-
-
-		<hr>
-
-		<!-- Filter Form -->
-		<form id="filterForm" action="/filterMembers" method="get">
-			<div class="form-group">
-				<label for="memberTypeFilter">Member Type</label>
-				<select class="form-control" id="memberTypeFilter" name="memberType">
-					<option value="all">All Members</option>
-					<option value="regular">Regular Members</option>
-					<option value="personal">Personal Members</option>
-				</select>
-			</div>
-			<div class="form-group">
-				<label for="membershipStatusFilter">Payment Status</label>
-				<select class="form-control" id="paymentStatusFilter" name="paymentStatus">
-					<option value="all">All Status</option>
-					<option value="paid">Paid</option>
-					<option value="pending">Unpaid</option>
-				</select>
-			</div>
-			<div class="form-group">
-				<label for="joinDateRange">Join Date Range</label>
-				<input type="date" class="form-control mb-2" id="joinDateFrom" name="joinDateFrom">
-				<input type="date" class="form-control" id="joinDateTo" name="joinDateTo">
-			</div>
-
-			<button type="submit" class="btn btn-primary w-100 mt-3" id="applyFilters">Apply Filters</button>
-		</form>
+	<!-- Left Sidebar (Filter Form) -->
+	<div class="sidebar" id="sidebar">
+	    <h5>Filters</h5>
+	    <hr>
+	    <form id="filterForm" action="/filterMembers" method="get">
+	        <div class="form-group">
+	            <label for="memberTypeFilter">Member Type</label>
+	            <select class="form-control" id="memberTypeFilter" name="memberType">
+	                <option value="all">All Members</option>
+	                <option value="regular">Regular Members</option>
+	                <option value="personal">Personal Members</option>
+	            </select>
+	        </div>
+	        <div class="form-group">
+	            <label for="membershipStatusFilter">Payment Status</label>
+	            <select class="form-control" id="paymentStatusFilter" name="paymentStatus">
+	                <option value="all">All Status</option>
+	                <option value="paid">Paid</option>
+	                <option value="pending">Unpaid</option>
+	            </select>
+	        </div>
+	        <div class="form-group">
+	            <label for="joinDateRange">Join Date Range</label>
+	            <input type="date" class="form-control mb-2" id="joinDateFrom" name="joinDateFrom">
+	            <input type="date" class="form-control" id="joinDateTo" name="joinDateTo">
+	        </div>
+	        <button type="submit" class="btn btn-primary w-100 mt-3" id="applyFilters">Apply Filters</button>
+	    </form>
 	</div>
-
-	<!-- Right Sidebar -->
-	<div class="right-sidebar">
-		<h5 class="text-primary">Business Summary</h5>
-		<hr>
-
-		<!-- Total Amount Paid -->
-		<div class="summary-item mb-3">
-			<div class="summary-title">Total Amount Paid</div>
-			<h3 class="card-text text-success font-weight-bold" th:text="${totalPaidAmount}">0.0</h3>
-		</div>
-
-		<!-- Total Amount Pending -->
-		<div class="summary-item mb-3">
-			<div class="summary-title">Total Amount Pending</div>
-			<h3 class="card-text text-danger font-weight-bold" th:text="${totalPendingAmount}">0.0</h3>
-		</div>
-
-		<!-- Members Paid -->
-		<div class="summary-item mb-3">
-			<div class="summary-title">Members Paid</div>
-			<h3 class="card-text text-success font-weight-bold" th:text="${paidMembersCount}">0.0</h3>
-		</div>
-
-		<!-- Members Pending -->
-		<div class="summary-item">
-			<div class="summary-title">Members Pending</div>
-			 <h3 class="card-text text-danger font-weight-bold" th:text="${pendingMembersCount}">0.0</h3>
-		</div>
-	</div>
-	
 
 	<div class="main-content">
 
@@ -455,8 +461,8 @@
 		<!-- Footer -->
 		<footer class="footeer text-center text-lg-start">
 			<div class="text-center p-3">
-				© 2024 MS Fitness and Sport Club:
-				<a class="text-dark" href="#">msfitness.com</a>
+				© 2024 MS Fitness and Sport Club
+				
 			</div>
 		</footer>
 
@@ -470,7 +476,9 @@
 
 		<script>
 
-
+			document.getElementById('filtersButton').addEventListener('click', function() {
+			        document.getElementById('sidebar').classList.toggle('open');
+			    });
 		</script>
 </body>
 
